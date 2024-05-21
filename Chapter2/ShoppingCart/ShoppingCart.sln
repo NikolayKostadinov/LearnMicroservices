@@ -5,8 +5,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{CC9845BC-3C17-465D-91D0-CD7027EA3522}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		Dockerfile = Dockerfile
-		shopping-cart.yaml = shopping-cart.yaml
 	EndProjectSection
 EndProject
 Global

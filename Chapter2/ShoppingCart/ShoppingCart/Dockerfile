@@ -7,10 +7,8 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["ShoppingCart/ShoppingCart.csproj", "ShoppingCart/"]
-RUN dotnet restore "ShoppingCart/ShoppingCart.csproj"
 COPY . .
-WORKDIR "/src/ShoppingCart"
+RUN dotnet restore
 RUN dotnet build "ShoppingCart.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
