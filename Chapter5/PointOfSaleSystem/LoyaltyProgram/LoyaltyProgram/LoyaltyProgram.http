@@ -1,0 +1,6 @@
+@LoyaltyProgram_HostAddress = http://localhost:5110
+
+GET {{LoyaltyProgram_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
