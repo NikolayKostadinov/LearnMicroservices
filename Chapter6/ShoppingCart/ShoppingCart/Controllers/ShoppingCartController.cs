@@ -1,0 +1,46 @@
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace ShoppingCart.Controllers;
+
+using Data;
+using Models;
+
+[Route("/shoppingcart")]
+public class ShoppingCartController : ControllerBase
+{
+    private readonly IShoppingCartStore _shoppingCartStore;
+    private readonly IProductCatalogClient _productCatalogClient;
+    private readonly IEventStore _eventStore;
+
+    public ShoppingCartController(
+        IShoppingCartStore shoppingCartStore,
+        IProductCatalogClient productCatalogClient,
+        IEventStore eventStore)
+    {
+        _shoppingCartStore = shoppingCartStore;
+        _productCatalogClient = productCatalogClient;
+        _eventStore = eventStore;
+    }
+
+    [HttpGet("{userId:int}")]
+    public async Task<ShoppingCart> Get(int userId) => await _shoppingCartStore.Get(userId);
+
+    [HttpPost("{userId:int}/items")]
+    public async Task<ShoppingCart> Post(int userId, [FromBody] int[] productIds)
+    {
+        var shoppingCart = await _shoppingCartStore.Get(userId);
+        var shoppingCartItems = await _productCatalogClient.GetShoppingCartItems(productIds);
+        shoppingCart.AddItems(shoppingCartItems, _eventStore);
+        await _shoppingCartStore.Save(shoppingCart);
+        return shoppingCart;
+    }
+
+    [HttpDelete("{userid:int}/items")]
+    public async Task<ShoppingCart> Delete(int userId, [FromBody] int[] productIds)
+    {
+        var shoppingCart = await _shoppingCartStore.Get(userId);
+        shoppingCart.RemoveItems(productIds, _eventStore);
+        await _shoppingCartStore.Save(shoppingCart);
+        return shoppingCart;
+    }
+}
