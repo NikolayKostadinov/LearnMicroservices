@@ -1,24 +1,24 @@
-﻿namespace ShoppingCart.Data;
+namespace ShoppingCart.ShoppingCart;
 
 using System.Net.Http.Headers;
 using System.Text.Json;
-using Models;
+
+public interface IProductCatalogClient
+{
+    Task<IEnumerable<ShoppingCartItem>> GetShoppingCartItems(int[] productCatalogIds);
+}
 
 public class ProductCatalogClient : IProductCatalogClient
 {
     private readonly HttpClient _client;
-    private static string _productCatalogBaseUrl = @"https://git.io/JeHiE";
-    private static string _getProductPathTemplate = "?productIds=[{0}]";
+    private const string _productCatalogBaseUrl = "https://git.io/JeHiE";
+    private const string _getProductPathTemplate = "?productIds=[{0}]";
 
     public ProductCatalogClient(HttpClient client)
     {
-        client.BaseAddress =
-            new Uri(_productCatalogBaseUrl);
-
+        client.BaseAddress = new Uri(_productCatalogBaseUrl);
         client.DefaultRequestHeaders
-            .Accept
-            .Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
+            .Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         _client = client;
     }
 
@@ -37,13 +37,13 @@ public class ProductCatalogClient : IProductCatalogClient
     private static async Task<IEnumerable<ShoppingCartItem>> ConvertToShoppingCartItems(HttpResponseMessage response)
     {
         response.EnsureSuccessStatusCode();
-        var products = await
-            JsonSerializer.DeserializeAsync<List<ProductCatalogProduct>>(
+        var products = await JsonSerializer
+            .DeserializeAsync<List<ProductCatalogProduct>>(
                 await response.Content.ReadAsStreamAsync(),
                 new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
-                }) ?? new();
+                }) ?? [];
         return products
             .Select(p =>
                 new ShoppingCartItem(
@@ -53,10 +53,10 @@ public class ProductCatalogClient : IProductCatalogClient
                     p.Price
                 ));
     }
-}
 
-public record ProductCatalogProduct(
-    int ProductId,
-    string ProductName,
-    string ProductDescription,
-    Money Price);
+    private record ProductCatalogProduct(
+        int ProductId,
+        string ProductName,
+        string ProductDescription,
+        Money Price);
+}

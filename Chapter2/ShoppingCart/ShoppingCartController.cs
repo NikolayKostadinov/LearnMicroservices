@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
-namespace ShoppingCart.Controllers;
+namespace ShoppingCart.ShoppingCart;
 
-using Data;
-using Models;
+using EventFeed;
 
 [Route("/shoppingcart")]
 public class ShoppingCartController : ControllerBase
@@ -26,9 +25,7 @@ public class ShoppingCartController : ControllerBase
     public ShoppingCart Get(int userId) => _shoppingCartStore.Get(userId);
 
     [HttpPost("{userId:int}/items")]
-    public async Task<ShoppingCart> Post(
-        int userId,
-        [FromBody] int[] productIds)
+    public async Task<ShoppingCart> Post(int userId, [FromBody] int[] productIds)
     {
         var shoppingCart = _shoppingCartStore.Get(userId);
         var shoppingCartItems = await _productCatalogClient.GetShoppingCartItems(productIds);
@@ -38,9 +35,7 @@ public class ShoppingCartController : ControllerBase
     }
 
     [HttpDelete("{userid:int}/items")]
-    public ShoppingCart Delete(
-        int userId,
-        [FromBody] int[] productIds)
+    public ShoppingCart Delete(int userId, [FromBody] int[] productIds)
     {
         var shoppingCart = _shoppingCartStore.Get(userId);
         shoppingCart.RemoveItems(productIds, _eventStore);
