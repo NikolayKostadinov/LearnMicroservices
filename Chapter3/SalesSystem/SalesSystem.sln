@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCart", "ShoppingCart\ShoppingCart.csproj", "{1E286451-0CD1-4EB8-8F34-B77C820529B0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFiles", "{3A5112AC-2509-4D9B-AA11-A12C32642A1D}"
+	ProjectSection(SolutionItems) = preProject
+		Dockerfile = Dockerfile
+		.dockerignore = .dockerignore
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1E286451-0CD1-4EB8-8F34-B77C820529B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E286451-0CD1-4EB8-8F34-B77C820529B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E286451-0CD1-4EB8-8F34-B77C820529B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E286451-0CD1-4EB8-8F34-B77C820529B0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
